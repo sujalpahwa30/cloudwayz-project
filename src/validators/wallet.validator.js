@@ -1,10 +1,25 @@
 const { z } = require("zod");
 
-exports.createWalletSchema = z.object({
-    owner: z.string().min(1).max(100),
-    balance: z.number().int()
+const createWalletSchema = z.object({
+    owner: z
+        .string()
+        .trim()
+        .min(1, "Owner name is required")
+        .max(100),
+
+    balance: z
+        .number()
+        .int()
+        .nonnegative("Initial balance cannot be negative"),
 });
 
-exports.updateWalletSchema = z.object({
-    delta: z.number().int()
+const updateWalletSchema = z.object({
+    delta: z
+        .number()
+        .int("Delta must be an integer"),
 });
+
+module.exports = {
+    createWalletSchema,
+    updateWalletSchema,
+};

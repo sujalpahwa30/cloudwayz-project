@@ -1,6 +1,8 @@
 const pool = require("../config/db");
 const walletRepository = require("../repositories/wallet.repository");
 
+const AppError = require("../utils/AppError");
+
 /**
  * Create Wallet
  */
@@ -34,7 +36,7 @@ const getWallet = async (walletId) => {
             walletId
         );
         if (!wallet) {
-            throw new Error("Wallet not found");
+            throw new AppError("Wallet not found", 404);
         }
         return wallet;
     } finally {
@@ -64,7 +66,7 @@ const applyDelta = async (walletId, delta) => {
          */
         const newBalance = wallet.balance + delta;
         if (newBalance < 0) {
-            throw new Error("Insufficient wallet balance");
+            throw new AppError("Insufficient wallet balance", 400);
         }
         // Atomic Update
         await walletRepository.updateWalletBalance(
