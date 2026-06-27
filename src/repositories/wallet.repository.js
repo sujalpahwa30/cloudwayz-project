@@ -81,7 +81,6 @@ const updateWalletBalance = async (connection, walletId, delta) => {
 
 /**
  * Delete wallet.
- * (Not required by the assignment but useful for tests.)
  */
 const deleteWallet = async (connection, walletId) => {
   const [result] = await connection.execute(
